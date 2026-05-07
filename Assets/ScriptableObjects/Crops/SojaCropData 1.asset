@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db7c60c9d2147feac1c6cf286be5d55, type: 3}
   m_Name: SojaCropData 1
   m_EditorClassIdentifier: 
-  id: corn
-  cropPrefab: {fileID: 919132149155446097, guid: feb9996bc21a345f497c36eb93aaffa6, type: 3}
-  finalItemPrefab: {fileID: 966135852847561399, guid: 4daa2ecc2a220452db8f1787d88e44e4, type: 3}
-  growTime: 6
+  id: soja
+  cropPrefab: {fileID: 919132149155446097, guid: 7adbbbfc6e1dc4f9981078a62953ec5c, type: 3}
+  finalItemPrefab: {fileID: 4066055640936129730, guid: dfe8df3103ab8449c8c29a15aac42d50, type: 3}
+  growTime: 9

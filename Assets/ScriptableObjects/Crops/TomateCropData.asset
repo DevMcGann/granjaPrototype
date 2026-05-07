@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db7c60c9d2147feac1c6cf286be5d55, type: 3}
   m_Name: TomateCropData
   m_EditorClassIdentifier: 
-  id: corn
-  cropPrefab: {fileID: 919132149155446097, guid: feb9996bc21a345f497c36eb93aaffa6, type: 3}
-  finalItemPrefab: {fileID: 966135852847561399, guid: 4daa2ecc2a220452db8f1787d88e44e4, type: 3}
-  growTime: 6
+  id: tomate
+  cropPrefab: {fileID: 919132149155446097, guid: f875dd8d3ce734fe7a0d04fa5e414f3d, type: 3}
+  finalItemPrefab: {fileID: 966135852847561399, guid: 4d26e23187a7a47dfbfc7cd9d11e482b, type: 3}
+  growTime: 16

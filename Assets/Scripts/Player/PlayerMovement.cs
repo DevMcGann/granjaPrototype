@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController controller;
     private Animator animator;
+    private bool isMovementEnabled = true;
 
     void Start()
     {
@@ -32,8 +33,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        float h = joystick.GetAxis("Horizontal");
-        float v = joystick.GetAxis("Vertical");
+        float h = 0f;
+        float v = 0f;
+
+        if (isMovementEnabled && joystick != null)
+        {
+            h = joystick.GetAxis("Horizontal");
+            v = joystick.GetAxis("Vertical");
+        }
 
         Vector3 input = new Vector3(h, 0f, v);
         float inputMagnitude = Mathf.Clamp01(input.magnitude);
@@ -75,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         // 🔄 ROTACIÓN PRO (suave y consistente)
-        if (moveDir.magnitude > 0.1f)
+        if (isMovementEnabled && moveDir.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDir);
 
@@ -84,6 +91,16 @@ public class PlayerMovement : MonoBehaviour
                 targetRotation,
                 rotationSpeed * Time.deltaTime
             );
+        }
+    }
+
+    public void SetMovementEnabled(bool enabled)
+    {
+        isMovementEnabled = enabled;
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
         }
     }
 }

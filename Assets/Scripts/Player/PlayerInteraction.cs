@@ -8,31 +8,21 @@ public class PlayerInteraction : MonoBehaviour
 
     private IInteractable currentInteractable;
     private InteractionZone currentZone;
+    private PlayerActionController actionController;
+
+    private void Awake()
+    {
+        actionController = GetComponent<PlayerActionController>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.isTrigger)
-        {
-            return;
-        }
+        TryRegisterZone(other);
+    }
 
-        InteractionZone zone = other.GetComponent<InteractionZone>();
-        if (zone == null)
-        {
-            return;
-        }
-
-        if (zone.GetInteractable() == null)
-        {
-            return;
-        }
-
-        overlappingZones.Add(zone);
-
-        if (currentZone == null)
-        {
-            ActivateZone(zone);
-        }
+    private void OnTriggerStay(Collider other)
+    {
+        TryRegisterZone(other);
     }
 
     private void OnTriggerExit(Collider other)
@@ -55,10 +45,39 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        currentInteractable?.StopInteraction(this);
-        currentInteractable = null;
+        StopCurrentInteraction();
         currentZone = null;
+        ActivateNextOverlappingZone();
+    }
 
+    private void TryRegisterZone(Collider other)
+    {
+        if (!other.isTrigger)
+        {
+            return;
+        }
+
+        InteractionZone zone = other.GetComponent<InteractionZone>();
+        if (zone == null)
+        {
+            return;
+        }
+
+        if (zone.GetInteractable() == null)
+        {
+            return;
+        }
+
+        overlappingZones.Add(zone);
+
+        if (currentZone == null || !IsInteractableAlive(currentInteractable))
+        {
+            ActivateZone(zone);
+        }
+    }
+
+    private void ActivateNextOverlappingZone()
+    {
         foreach (InteractionZone overlappingZone in overlappingZones)
         {
             if (overlappingZone == null)
@@ -95,10 +114,43 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        currentInteractable?.StopInteraction(this);
+        StopCurrentInteraction();
 
         currentZone = zone;
         currentInteractable = interactable;
         currentInteractable.StartInteraction(this);
+    }
+
+    private void StopCurrentInteraction()
+    {
+        if (!IsInteractableAlive(currentInteractable))
+        {
+            currentInteractable = null;
+            return;
+        }
+
+        currentInteractable.StopInteraction(this);
+        currentInteractable = null;
+    }
+
+    private static bool IsInteractableAlive(IInteractable interactable)
+    {
+        if (interactable == null)
+        {
+            return false;
+        }
+
+        Object unityObject = interactable as Object;
+        return unityObject != null;
+    }
+
+    public PlayerActionController GetActionController()
+    {
+        if (actionController == null)
+        {
+            actionController = GetComponent<PlayerActionController>();
+        }
+
+        return actionController;
     }
 }
